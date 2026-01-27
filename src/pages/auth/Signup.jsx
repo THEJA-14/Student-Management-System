@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Form, Input, Button, Card, Divider, Select } from 'antd';
+import { Form, Input, Button, Card, Divider } from 'antd';
 import { GoogleOutlined, SyncOutlined } from '@ant-design/icons';
 import AuthLayout from '../../components/layouts/AuthLayout';
-
-const { Option } = Select;
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -27,6 +25,16 @@ export default function Signup() {
 
   const onFinish = (values) => {
     setLoading(true);
+    
+    const signupData = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      role: role
+    };
+
+    console.log('Signup Data:', signupData);
+
     setTimeout(() => {
       setLoading(false);
       if (role === 'admin') {
@@ -100,8 +108,11 @@ export default function Signup() {
           requiredMark={false}
         >
           <Form.Item
-            name="fullName"
-            rules={[{ required: true, message: 'Please enter your full name' }]}
+            name="name"
+            rules={[
+              { required: true, message: 'Please enter your name' },
+              { min: 2, message: 'Name must be at least 2 characters' },
+            ]}
           >
             <Input
               placeholder="Full Name"
@@ -119,109 +130,6 @@ export default function Signup() {
           >
             <Input
               placeholder="Email address"
-              size="large"
-              style={{ height: 48, borderRadius: 8, fontSize: 15 }}
-            />
-          </Form.Item>
-
-          {role === 'student' && (
-            <Form.Item
-              name="studentId"
-              rules={[{ required: true, message: 'Please enter your student ID' }]}
-            >
-              <Input
-                placeholder="Student ID"
-                size="large"
-                style={{ height: 48, borderRadius: 8, fontSize: 15 }}
-              />
-            </Form.Item>
-          )}
-
-          {role === 'teacher' && (
-            <>
-              <Form.Item
-                name="employeeId"
-                rules={[{ required: true, message: 'Please enter your employee ID' }]}
-              >
-                <Input
-                  placeholder="Employee ID"
-                  size="large"
-                  style={{ height: 48, borderRadius: 8, fontSize: 15 }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="department"
-                rules={[{ required: true, message: 'Please select your department' }]}
-              >
-                <Select
-                  placeholder="Select Department"
-                  size="large"
-                  style={{ height: 48, borderRadius: 8 }}
-                >
-                  <Option value="mathematics">Mathematics</Option>
-                  <Option value="science">Science</Option>
-                  <Option value="english">English</Option>
-                  <Option value="history">History</Option>
-                  <Option value="physics">Physics</Option>
-                  <Option value="chemistry">Chemistry</Option>
-                  <Option value="biology">Biology</Option>
-                  <Option value="computer">Computer Science</Option>
-                  <Option value="arts">Arts</Option>
-                  <Option value="sports">Physical Education</Option>
-                </Select>
-              </Form.Item>
-            </>
-          )}
-
-          {role === 'student' && (
-            <>
-              <Form.Item
-                name="grade"
-                rules={[{ required: true, message: 'Please select your grade' }]}
-              >
-                <Select
-                  placeholder="Select Grade"
-                  size="large"
-                  style={{ height: 48, borderRadius: 8 }}
-                >
-                  <Option value="1">Grade 1</Option>
-                  <Option value="2">Grade 2</Option>
-                  <Option value="3">Grade 3</Option>
-                  <Option value="4">Grade 4</Option>
-                  <Option value="5">Grade 5</Option>
-                  <Option value="6">Grade 6</Option>
-                  <Option value="7">Grade 7</Option>
-                  <Option value="8">Grade 8</Option>
-                  <Option value="9">Grade 9</Option>
-                  <Option value="10">Grade 10</Option>
-                  <Option value="11">Grade 11</Option>
-                  <Option value="12">Grade 12</Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                name="section"
-                rules={[{ required: true, message: 'Please enter your section' }]}
-              >
-                <Input
-                  placeholder="Section (e.g., A, B, C)"
-                  size="large"
-                  style={{ height: 48, borderRadius: 8, fontSize: 15 }}
-                />
-              </Form.Item>
-            </>
-          )}
-
-          <Form.Item
-            name="phone"
-            rules={[
-              { required: true, message: 'Please enter your phone number' },
-              { pattern: /^[0-9]{10}$/, message: 'Please enter a valid 10-digit phone number' },
-            ]}
-          >
-            <Input
-              placeholder="Phone Number"
               size="large"
               style={{ height: 48, borderRadius: 8, fontSize: 15 }}
             />
@@ -283,6 +191,10 @@ export default function Signup() {
             </Button>
           </Form.Item>
         </Form>
+
+        <p style={{ textAlign: 'center', fontSize: 12, color: '#8c8c8c', marginTop: 16 }}>
+          By signing up, you agree to our Terms of Service and Privacy Policy
+        </p>
       </Card>
     </AuthLayout>
   );

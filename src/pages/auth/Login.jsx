@@ -12,6 +12,15 @@ export default function Login() {
 
   const onFinish = (values) => {
     setLoading(true);
+
+    const loginData = {
+      email: values.email,
+      password: values.password,
+      role: role
+    };
+
+    console.log('Login Data:', loginData);
+
     setTimeout(() => {
       setLoading(false);
       if (role === 'admin') {
@@ -55,7 +64,7 @@ export default function Login() {
           <p style={{ fontSize: 14, color: '#8c8c8c', marginTop: 8 }}>
             Don't have an account, yet?{' '}
             <Link to={`/signup?role=${role}`} style={{ color: '#5B7FFF', fontWeight: 500 }}>
-              {role === 'admin' ? 'Admin Sign up' : 'Sign up now'}
+              Sign up now
             </Link>
           </p>
         </div>
