@@ -1,49 +1,29 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Form, Input, Button, Card, Divider } from 'antd';
+import { useNavigate, Link } from 'react-router-dom';
+import { Form, Input, Button, Card, Divider, message } from 'antd';
 import { GoogleOutlined, SyncOutlined } from '@ant-design/icons';
 import AuthLayout from '../../components/layouts/AuthLayout';
 
-export default function Signup() {
+export default function Register() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const role = searchParams.get('role') || 'student';
-
-  const getRoleTitle = () => {
-    switch (role) {
-      case 'admin':
-        return 'Admin';
-      case 'teacher':
-        return 'Teacher';
-      case 'student':
-        return 'Student';
-      default:
-        return 'User';
-    }
-  };
 
   const onFinish = (values) => {
     setLoading(true);
-    
-    const signupData = {
+
+    const registerData = {
       name: values.name,
       email: values.email,
       password: values.password,
-      role: role
+      role: 'admin',
     };
 
-    console.log('Signup Data:', signupData);
+    console.log('Register Data:', registerData);
 
     setTimeout(() => {
       setLoading(false);
-      if (role === 'admin') {
-        navigate('/admin/dashboard');
-      } else if (role === 'teacher') {
-        navigate('/teacher/dashboard');
-      } else {
-        navigate('/student/dashboard');
-      }
+      message.success('Admin account created successfully!');
+      navigate('/admin/dashboard');
     }, 1000);
   };
 
@@ -73,11 +53,11 @@ export default function Signup() {
             <SyncOutlined style={{ fontSize: 32, color: '#fff' }} />
           </div>
           <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, color: '#262626' }}>
-            Create {getRoleTitle()} Account
+            Create Admin Account
           </h1>
           <p style={{ fontSize: 14, color: '#8c8c8c', marginTop: 8 }}>
             Already have an account?{' '}
-            <Link to={`/login?role=${role}`} style={{ color: '#5B7FFF', fontWeight: 500 }}>
+            <Link to="/login" style={{ color: '#5B7FFF', fontWeight: 500 }}>
               Sign in
             </Link>
           </p>
@@ -98,10 +78,10 @@ export default function Signup() {
           Continue with Google
         </Button>
 
-        <Divider style={{ fontSize: 13, color: '#bfbfbf' }}>or sign up using email</Divider>
+        <Divider style={{ fontSize: 13, color: '#bfbfbf' }}>or register using email</Divider>
 
         <Form
-          name="signup"
+          name="register"
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
@@ -187,13 +167,13 @@ export default function Signup() {
                 marginTop: 8,
               }}
             >
-              Create Account
+              Create Admin Account
             </Button>
           </Form.Item>
         </Form>
 
         <p style={{ textAlign: 'center', fontSize: 12, color: '#8c8c8c', marginTop: 16 }}>
-          By signing up, you agree to our Terms of Service and Privacy Policy
+          By registering, you agree to our Terms of Service and Privacy Policy
         </p>
       </Card>
     </AuthLayout>

@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Form, Input, Button, Card, Divider } from 'antd';
+import { useNavigate, Link } from 'react-router-dom';
+import { Form, Input, Button, Card, Divider, Select, message } from 'antd';
 import { GoogleOutlined, SyncOutlined } from '@ant-design/icons';
 import AuthLayout from '../../components/layouts/AuthLayout';
 
+const { Option } = Select;
+
 export default function Login() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
-  const role = searchParams.get('role') || 'admin';
 
   const onFinish = (values) => {
     setLoading(true);
@@ -16,16 +16,18 @@ export default function Login() {
     const loginData = {
       email: values.email,
       password: values.password,
-      role: role
+      role: values.role,
     };
 
     console.log('Login Data:', loginData);
 
     setTimeout(() => {
       setLoading(false);
-      if (role === 'admin') {
+      message.success('Login successful!');
+      
+      if (values.role === 'admin') {
         navigate('/admin/dashboard');
-      } else if (role === 'teacher') {
+      } else if (values.role === 'teacher') {
         navigate('/teacher/dashboard');
       } else {
         navigate('/student/dashboard');
@@ -62,9 +64,9 @@ export default function Login() {
             Sign in
           </h1>
           <p style={{ fontSize: 14, color: '#8c8c8c', marginTop: 8 }}>
-            Don't have an account, yet?{' '}
-            <Link to={`/signup?role=${role}`} style={{ color: '#5B7FFF', fontWeight: 500 }}>
-              Sign up now
+            Don't have an account?{' '}
+            <Link to="/register" style={{ color: '#5B7FFF', fontWeight: 500 }}>
+              Register as Admin
             </Link>
           </p>
         </div>
@@ -92,7 +94,23 @@ export default function Login() {
           onFinish={onFinish}
           autoComplete="off"
           requiredMark={false}
+          initialValues={{ role: 'admin' }}
         >
+          <Form.Item
+            name="role"
+            rules={[{ required: true, message: 'Please select your role' }]}
+          >
+            <Select
+              size="large"
+              placeholder="Select your role"
+              style={{ height: 48, borderRadius: 8 }}
+            >
+              <Option value="admin">Admin</Option>
+              <Option value="teacher">Teacher</Option>
+              <Option value="student">Student</Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item
             name="email"
             rules={[
