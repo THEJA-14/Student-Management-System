@@ -334,8 +334,7 @@ export default function LandingPage() {
             <div className="section-header" data-aos="fade-up">
               <span className="section-tag">Testimonials</span>
               <h2 className="section-title">
-                Loved by Schools
-                <span className="gradient-text"> Worldwide</span>
+                Loved by Schools Worldwide
               </h2>
               <p className="section-description">
                 Join thousands of satisfied educators who have transformed their schools with EduManage.
